@@ -1,0 +1,117 @@
+*, *::before, *::after{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+	--clr-neutral-100: #E8EDE7;
+	--clr-neutral-200: #81BECE;
+	--clr-neutral-300: #378BA4;
+	--clr-neutral-400: #036280;
+	--clr-neutral-500: #012E4A;
+	--clr-iter: #f08080;
+}
+
+.registro-orden {
+	display: flex;
+	padding: 1em;
+	max-width: 50ch;
+	flex-wrap: wrap;
+}
+
+.labels,
+.campos {
+	min-width: max-content;
+	width: 50%;
+	display: flex;
+	/* gap: .5em; */
+	flex-direction: column;
+	background-color: var(--clr-neutral-200);
+	border: 3px solid var(--clr-neutral-400);
+}
+
+.labels {
+	border-right: none;
+	border-radius: 10px 0 0 10px;
+}
+
+.campos {
+	flex-wrap: wrap;
+	border-radius: 0 10px 10px 0;
+	border-left: none;
+	padding-right: .25em;
+}
+
+.registro-orden .labels > label {
+	display: block;
+	flex-grow: 1;
+	text-align: right;
+	padding-block: .25em;
+	margin: .25em .25em;
+	color: var(--clr-neutral-500);
+	font-weight: 400;
+}
+
+.registro-orden .labels > label:hover {
+	background-color: var(--clr-iter);
+	cursor: pointer;
+	border-radius: 10px 0 0 10px;
+	font-weight: 500;
+}
+
+.registro-orden .campos > * {
+	width: 100%;
+	border: 0;
+	padding-inline: .25em;
+	margin-block: .25em;
+	flex-grow: 1;
+	border-radius: 0 10px 10px 0;
+	color: var(--clr-neutral-500);
+	font-weight: 400;
+	text-align: center;
+	background-color: var(--clr-neutral-100);
+}
+
+.registro-orden .campos > :is(span, input[type="checkbox"]) {
+	background-color: red;
+	width: 30%;
+}
+
+.registro-orden .campos > *:focus {
+	outline-color: var(--clr-neutral-300);
+}
+
+.registro-orden .seleccion-carga {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: .5em;
+	background-color: transparent;
+}
+
+.seleccion-carga input {
+	width: 1.5em;
+	aspect-ratio: 1;
+	accent-color: var(--clr-neutral-300);
+}
+
+.orden-btn {
+	width: 100%;
+	border-radius: 10px;
+	border-width: 3px;
+	margin-block: .5em;
+	padding-block: .5em;
+	background-color: var(--clr-neutral-100);
+	font-size: 1.5em;
+	font-weight: 500;
+	color: var(--clr-neutral-400);
+	border-color: var(--clr-neutral-400);
+}
+
+.orden-btn:hover {
+	cursor: pointer;
+	background-color: var(--clr-neutral-300);
+	color: var(--clr-neutral-100);
+}

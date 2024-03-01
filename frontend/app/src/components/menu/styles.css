@@ -1,0 +1,191 @@
+*, *::before, *::after{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+	--clr-neutral-100: #E8EDE7;
+	--clr-neutral-200: #81BECE;
+	--clr-neutral-300: #378BA4;
+	--clr-neutral-400: #036280;
+	--clr-neutral-500: #012E4A;
+	--clr-iter: #f08080;
+}
+
+/* bloque de temporal */
+img {
+	height: 1.5em;
+	aspect-ratio: 1;
+	filter: invert(49%) sepia(79%) saturate(367%) hue-rotate(147deg) brightness(84%) contrast(85%);
+}
+
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1em 1.5em;
+	gap: 1em;
+	background-color: var(--clr-neutral-500);
+}
+
+.contenedor-logo,
+.iniciar-registro {
+	display: flex;
+	align-items: center;
+	list-style: none;
+	gap: 2em;
+}
+
+.contenedor-logo .logo {
+	text-decoration: none;
+	font-size: 2rem;
+	font-weight: 600;
+	font-variant: small-caps;
+	color: var(--clr-neutral-300);
+}
+
+:is(.inicio-btn, .iniciar-btn, .registro-btn) {
+	color: var(--clr-neutral-100);
+	text-decoration: none;
+	font-size: clamp(1rem, 2.5vmax, 1.5rem);
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+:is(.inicio-btn, .iniciar-btn, .registro-btn)::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: -5px;
+	width: 100%;
+	height: 1px;
+	border-radius: 5px;
+	background-color: var(--clr-iter);
+	transition: scale 350ms linear;
+	scale: 0;
+	transform-origin: right;
+}
+
+:is(.inicio-btn, .iniciar-btn, .registro-btn):hover::after {
+	scale: 1;
+	transform-origin: left;
+}
+
+:is(.inicio-btn, .iniciar-btn, .registro-btn)::before {
+	content: '';
+	position: absolute;
+	left: -.55em;
+	top: .45em;
+	padding: .35em;
+	translate: -50%;
+}
+
+.inicio-btn::before {
+	background-image: url(../../images/inicio.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	filter: invert(49%) sepia(79%) saturate(367%) hue-rotate(147deg) brightness(84%) contrast(85%);
+}
+
+.iniciar-btn::before {
+	background-image: url(../../images/login.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	filter: invert(49%) sepia(79%) saturate(367%) hue-rotate(147deg) brightness(84%) contrast(85%);
+}
+
+.registro-btn::before {
+	background-image: url(../../images/registro.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	filter: invert(49%) sepia(79%) saturate(367%) hue-rotate(147deg) brightness(84%) contrast(85%);
+}
+
+:is(.area-iniciar,
+.area-registro) {
+	display: none;
+	background-image: linear-gradient(to top, var(--clr-neutral-100) 20%, transparent 60%);
+	border-radius: 10px;
+	flex-direction: column;
+	align-items: center;
+	font-weight: 500;
+	gap: .25em;
+	width: min-content;
+	position: absolute;
+	right: 1em;
+	padding-top: 10em;
+	padding: 3em 1em 1em 1em;
+}
+
+:is(.area-iniciar,
+.area-registro) h2 {
+	color: var(--clr-neutral-400);
+}
+
+:is(.area-iniciar,
+.area-registro) [type="submit"] {
+	margin-block: .5em;
+	border: none;
+	outline: none;
+	width: 100%;
+	padding: .15em .50em;
+	border-radius: 10px;
+	font-weight: 600;
+	font-size: 1.25rem;
+	background-color: var(--clr-neutral-300);
+	color: var(--clr-neutral-100);
+}
+
+:is(.area-iniciar,
+.area-registro) [type="submit"]:hover {
+	color: var(--clr-iter);
+	cursor: pointer;
+}
+
+:is(.area-iniciar,
+.area-registro) [type="submit"]:active {
+	outline: 2px solid var(--clr-iter);
+	outline-offset: 2px;
+}
+
+:is(.contenedor-iniciar, .contenedor-registro):hover > form {
+	display: flex;
+}
+
+.contenedor-busqueda {
+	padding: .25em .75em;
+	border-radius: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	box-shadow: 0 0 0 1px var(--clr-neutral-300);
+}
+
+.barra-busqueda {
+	width: 0;
+	border: 0;
+	outline: 0;
+	color: var(--clr-iter);
+	background-color: transparent;
+	font-size: 1.25rem;
+	transition: all 250ms;
+}
+
+.contenedor-busqueda:hover > .barra-busqueda {
+	width: 100%;
+}
+
+[type="search"]:valid {
+	width: calc(100% - 1em);
+}
+
+[type="search"]:valid + .imagen-busqueda {
+	cursor: pointer;
+	filter: invert(81%) sepia(62%) saturate(3590%) hue-rotate(308deg) brightness(98%) contrast(92%);
+}

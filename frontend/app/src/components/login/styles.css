@@ -1,0 +1,40 @@
+.contenedor-iniciar:hover > form {
+	display: flex;
+}
+
+.iniciar-btn {
+	color: var(--clr-neutral-100);
+	text-decoration: none;
+	font-size: clamp(1rem, 2.5vmax, 1.5rem);
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.iniciar-btn::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: -5px;
+	width: 100%;
+	height: 1px;
+	border-radius: 5px;
+	background-color: var(--clr-iter);
+	transition: scale 150ms linear;
+	scale: 0;
+	transform-origin: right;
+}
+
+.iniciar-btn:hover::after {
+	scale: 1;
+	transform-origin: left;
+}
+
+.iniciar-btn::before {
+	content: '';
+	position: absolute;
+	left: -.55em;
+	top: .45em;
+	padding: .35em;
+	translate: -50%;
+}
