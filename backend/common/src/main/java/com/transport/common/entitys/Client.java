@@ -45,6 +45,6 @@ public class Client {
     private List<Land> GroundShipments = new ArrayList<>();
 
     @OneToMany(mappedBy = "Client", cascade = CascadeType.ALL)
-    private List<Land> MaritimeShipments = new ArrayList<>();
+    private List<Maritime> MaritimeShipments = new ArrayList<>();
 
 }
