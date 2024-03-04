@@ -20,6 +20,7 @@ const Update = (props) => {
 
 
   useEffect(() => {
+
     const tokenDao = new Token("javainuse", "password");
 
     let headers = {
@@ -36,43 +37,47 @@ const Update = (props) => {
       .then((response) => {
         const tokenResult = RegexUtils.ExtractValue(/"token"\s*:\s*"([^"]+)"/, JSON.stringify(response.data));
         setToken(tokenResult);
-
-        if(typeRequest === "Update") {
-          let getEndpoint = '';
-
-          const headers = {
-            "Authorization": `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          };
-
-          if(sector === "Land"){
-            getEndpoint = `http://localhost:9090/api/transport/land/find?id=${productId}`;
-          } else {
-            getEndpoint = `http://localhost:1010/api/transport/maritime/find?id=${productId}`;
-          }
-
-          axios.get(getEndpoint, { headers })
-            .then(response => {
-              const data = response.data;
-              setTipoProducto(data.tipoProducto);
-              setCantidadProducto(data.cantidadProducto);
-              setFechaRegistro(data.fechaRegistro);
-              setFechaEntrega(data.fechaEntrega);
-              setBodegaEntrega(data.bodegaEntrega);
-              setPrecioEnvio(data.precioEnvio);
-              setPlacaVehiculo(data.placaVehiculo);
-              setNumeroGuia(data.numeroGuia);
-              setTipoCarga(data.tipoCarga);
-            })
-            .catch(error => console.log(error));
-        }
       })
       .catch((error) => {
         alert("There was an error: " + error);
       });
+
+      
   }, []); 
 
+  const CompleteFields = async () => {
+
+    if(typeRequest === "Update" && token !== "") {
+
+      let getEndpoint = '';
+
+      const headers = {
+        "Authorization": `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      };
+
+      if(sector === "Land"){
+        getEndpoint = `http://localhost:9090/api/transport/land/find?id=${productId}`;
+      } else {
+        getEndpoint = `http://localhost:1010/api/transport/maritime/find?id=${productId}`;
+      }
+
+      const response = await axios.get(getEndpoint, { headers })
+      const data = response.data;
+      setTipoProducto(data.tipoProducto);
+      setCantidadProducto(data.cantidadProducto);
+      setFechaRegistro(data.fechaRegistro);
+      setFechaEntrega(data.fechaEntrega);
+      setBodegaEntrega(data.bodegaEntrega);
+      setPrecioEnvio(data.precioEnvio);
+      setPlacaVehiculo(data.placaVehiculo);
+      setNumeroGuia(data.numeroGuia);
+      setTipoCarga(data.tipoCarga);
+    }
+  }
+
   const InsertShipment = (e) => {
+
     e.preventDefault();
 
     let insertEndpoint = '';
@@ -111,6 +116,12 @@ const Update = (props) => {
       })
       .catch(error => console.log(error));
   };
+
+  useEffect(() => {
+
+    CompleteFields();
+
+  }, [token]);
 
   const UpdateShipment = (e) => {
 

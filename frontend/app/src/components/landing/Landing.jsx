@@ -10,20 +10,27 @@ const Landing = (props) => {
   const [listMaritimeShipments, setListMaritimeShipments] = useState([]);
   const [listShipments, setListShipments] = useState([]);
   const [token, setToken] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [client, setClient] = useState({});
 
+  // Effect to run once on component mount to set the initial state
   useEffect(() => {
     const intervalId = setInterval(() => {
       setClient(localStorage.getItem('client'));
-    }, 5000);
-
+      setSearchTerm(localStorage.getItem('searchTerm')); // Update searchTerm
+    }, 1000);
+  
     // Cleanup function to clear the interval
     return () => clearInterval(intervalId);
-  }, []);
-
+  }, [searchTerm]); // Include searchTerm in the dependency array
 
   useEffect(() => {
-
+    setSearchTerm(""); // Set searchTerm to empty when component is refreshed
+    localStorage.setItem('searchTerm', ''); // Set searchTerm to empty in localStorage
+  }, []);
+  
+  // Effect to fetch token on component mount
+  useEffect(() => {
     const tokenDao = new Token("javainuse", "password");
 
     let headers = {
@@ -46,50 +53,62 @@ const Landing = (props) => {
       });
   }, []); // Empty dependency array to run only once on component mount
 
-  const throwLandShipments = async () => {
-    const headers = {
-      "Authorization": `Bearer ${token}`,
-      "Content-Type": "application/json"
-    };
-    try {
-      const response = await axios.get("http://localhost:9090/api/transport/land/get", { headers });
-      const parseShipments = response.data.map((item) => ({
-        productId: item.id,
-        productType: item.tipoProducto,
-        dateDelivery: item.fechaEntrega,
-        sector: 'Land'
-      }));
-      setListLandShipments(parseShipments);
-    } catch (error) {
-      console.log("Error fetching land shipments:", error);
-    }
-  };
-
-  const throwMaritimeShipments = async () => {
-    const headers = {
-      "Authorization": `Bearer ${token}`,
-      "Content-Type": "application/json"
-    };
-    try {
-      const response = await axios.get("http://localhost:1010/api/transport/maritime/get", { headers });
-      const parseShipments = response.data.map((item) => ({
-        productId: item.id,
-        productType: item.tipoProducto,
-        dateDelivery: item.fechaEntrega,
-        sector: 'Maritime'
-      }));
-      setListMaritimeShipments(parseShipments);
-    } catch (error) {
-      console.log("Error fetching maritime shipments:", error);
-    }
-  };
-
+  // Effect to fetch land shipments
   useEffect(() => {
+    const throwLandShipments = async () => {
+      const headers = {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      };
+      try {
+        const response = await axios.get("http://localhost:9090/api/transport/land/get", { headers });
+        const parseShipments = response.data.map((item) => ({
+          productId: item.id,
+          productType: item.tipoProducto,
+          dateDelivery: item.fechaEntrega,
+          sector: 'Land'
+        }));
+        setListLandShipments(parseShipments);
+      } catch (error) {
+        console.log("Error fetching land shipments:", error);
+      }
+    };
+
     throwLandShipments();
-    throwMaritimeShipments();
 
     const intervalId = setInterval(() => {
       throwLandShipments();
+    }, 3000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [token]); // Include token in the dependency array to re-run when token changes
+
+  // Effect to fetch maritime shipments
+  useEffect(() => {
+    const throwMaritimeShipments = async () => {
+      const headers = {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      };
+      try {
+        const response = await axios.get("http://localhost:1010/api/transport/maritime/get", { headers });
+        const parseShipments = response.data.map((item) => ({
+          productId: item.id,
+          productType: item.tipoProducto,
+          dateDelivery: item.fechaEntrega,
+          sector: 'Maritime'
+        }));
+        setListMaritimeShipments(parseShipments);
+      } catch (error) {
+        console.log("Error fetching maritime shipments:", error);
+      }
+    };
+
+    throwMaritimeShipments();
+
+    const intervalId = setInterval(() => {
       throwMaritimeShipments();
     }, 3000);
 
@@ -98,18 +117,42 @@ const Landing = (props) => {
     };
   }, [token]); // Include token in the dependency array to re-run when token changes
 
+  // Effect to concatenate land and maritime shipments arrays
   useEffect(() => {
-    // Concatenate land and maritime shipments arrays
     setListShipments([...listLandShipments, ...listMaritimeShipments]);
   }, [listLandShipments, listMaritimeShipments]);
 
-  return (
-    <div className="landing">
-      {listShipments.map((item, index) => (
+  // Effect to reset searchTerm to empty when component is refreshed
+  useEffect(() => {
+    setSearchTerm(""); // Set searchTerm to empty when component is refreshed
+  }, []);
+
+  const shipmentsFiltered = () => {
+    if(searchTerm !== "") {
+      // Filter the list of shipments based on the search term
+      const filteredShipments = listShipments.filter(item => 
+        item.productType.toLowerCase().startsWith(searchTerm.toLowerCase())
+      );
+
+      // Return the filtered list of shipments
+      return filteredShipments.map((item, index) => (
         <div key={index}>
           <Card productId={item.productId} productType={item.productType} dateDelivery={item.dateDelivery} sector={item.sector}/>
         </div>
-      ))}
+      ));
+    } else {
+      // If searchTerm is empty, return the original list of shipments
+      return listShipments.map((item, index) => (
+        <div key={index}>
+          <Card productId={item.productId} productType={item.productType} dateDelivery={item.dateDelivery} sector={item.sector}/>
+        </div>
+      ));
+    }
+  }
+
+  return (
+    <div className="landing">
+      {shipmentsFiltered()}
     </div>
   );
 };
