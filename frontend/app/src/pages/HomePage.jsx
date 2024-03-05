@@ -23,11 +23,11 @@ const HomePage = () => {
 
 
   const handleInsertClick = () => {
-    setShowUpdate(true);
+    setShowUpdate(true); // Set showUpdate to true to display the Insert option
   };
 
   const handleUpdateClose = () => {
-    setShowUpdate(false);
+    setShowUpdate(false); // Set showUpdate to false to hide the Update component
   };
 
   return (
@@ -44,7 +44,7 @@ const HomePage = () => {
             borderRadius: "5px",
             cursor: "pointer",
           }}
-          onClick={handleInsertClick}
+          onClick={handleInsertClick} // Wire up the button click event to handleInsertClick function
         >
           Agregar
         </button>
@@ -57,8 +57,8 @@ const HomePage = () => {
         </Routes>
         <Landing />
         {showUpdate && (
-          <Result>
-            <Update client ={client} typeRequest={"Insert"} onClose={handleUpdateClose} />
+          <Result showDetail={null}>
+            <Update  client ={client} typeRequest={"Insert"} onClose={handleUpdateClose} />
           </Result>
         )}
       </div>
